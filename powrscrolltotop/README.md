@@ -4,7 +4,7 @@
 
 ## How to install the POWr Scroll To Top Module:
 <ol>
-  <li>[Download POWr Scroll To Top Drupal 8 Extension](https://cdn.jsdelivr.net/gh/superpowr/powr_for_drupal8/powrscrolltotop.zip)</li>
+  <li><a href="https://cdn.jsdelivr.net/gh/superpowr/powr_for_drupal8/powrscrolltotop.zip">Download POWr Scroll To Top Drupal 8 Extension</a></li>
   <li>Click the <b>Extend</b> menu item in Drupal admin. Then click <b>+ Install New Module</b> button, then <b>Choose File</b>. Select the downloaded file and click <b>Install</b>.</li>
   <li> When the Module is successfully installed, click <b>Enable newly added modules.</b> Find the new module (search for "POWr"), select the checkbox next to POWr Scroll To Top and click the blue <b>Install</b></li>
 </ol>
@@ -24,7 +24,7 @@ See [Video Tutorial for how to configure POWr Plugins in Drupal](https://www.you
 	<li><b>Set Full HTML as format</b> for plugins to properly render on the page.</li>
 	<li>In the preview or live page, click the <b>Edit</b> button to edit your About Us.</li>
 </ol>
-<i>To edit in the future, make sure you are logged into your account at [powr.io](https://www.powr.io)</i>
+<i>To edit in the future, make sure you are logged into your account at <a href="https://www.powr.io">powr.io</a></i>
 <br/>
 
 
