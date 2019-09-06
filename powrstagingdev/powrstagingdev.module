@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrstagingdev.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrstagingdev_theme() {
+    global $base_url;
+    return [
+        'powrstagingdev_config_popup' => [
+            'template'  => 'powrstagingdev_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrstagingdev_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrstagingdev-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrstagingdev-installed']);
+        setcookie('powrstagingdev-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrstagingdev-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrstagingdev_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrstagingdev-installed'])) {
+        $form['powrstagingdev_config_popup'] = [
+            '#theme' => 'powrstagingdev_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrstagingdev/dialog';
+    }
+}

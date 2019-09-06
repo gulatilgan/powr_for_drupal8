@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrphotowatermark.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrphotowatermark_theme() {
+    global $base_url;
+    return [
+        'powrphotowatermark_config_popup' => [
+            'template'  => 'powrphotowatermark_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrphotowatermark_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrphotowatermark-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrphotowatermark-installed']);
+        setcookie('powrphotowatermark-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrphotowatermark-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrphotowatermark_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrphotowatermark-installed'])) {
+        $form['powrphotowatermark_config_popup'] = [
+            '#theme' => 'powrphotowatermark_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrphotowatermark/dialog';
+    }
+}

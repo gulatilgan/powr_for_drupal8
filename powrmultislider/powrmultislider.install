@@ -1,0 +1,6 @@
+<?php
+
+function powrmultislider_install()
+{
+    setcookie("powrmultislider-installed", 1, time() + (86400 * 30), "/");
+}

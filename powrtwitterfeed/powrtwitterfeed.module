@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrtwitterfeed.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrtwitterfeed_theme() {
+    global $base_url;
+    return [
+        'powrtwitterfeed_config_popup' => [
+            'template'  => 'powrtwitterfeed_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrtwitterfeed_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrtwitterfeed-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrtwitterfeed-installed']);
+        setcookie('powrtwitterfeed-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrtwitterfeed-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrtwitterfeed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrtwitterfeed-installed'])) {
+        $form['powrtwitterfeed_config_popup'] = [
+            '#theme' => 'powrtwitterfeed_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrtwitterfeed/dialog';
+    }
+}

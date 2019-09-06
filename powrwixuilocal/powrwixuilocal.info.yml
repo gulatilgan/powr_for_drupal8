@@ -1,0 +1,8 @@
+name: POWr Wix UI Local
+type: module
+description: Wix UI Local
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

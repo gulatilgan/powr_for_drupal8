@@ -1,0 +1,6 @@
+<?php
+
+function powrgraph_install()
+{
+    setcookie("powrgraph-installed", 1, time() + (86400 * 30), "/");
+}

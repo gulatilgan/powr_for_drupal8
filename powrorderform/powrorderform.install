@@ -1,0 +1,6 @@
+<?php
+
+function powrorderform_install()
+{
+    setcookie("powrorderform-installed", 1, time() + (86400 * 30), "/");
+}

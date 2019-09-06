@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrresume.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrresume_theme() {
+    global $base_url;
+    return [
+        'powrresume_config_popup' => [
+            'template'  => 'powrresume_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrresume_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrresume-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrresume-installed']);
+        setcookie('powrresume-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrresume-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrresume_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrresume-installed'])) {
+        $form['powrresume_config_popup'] = [
+            '#theme' => 'powrresume_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrresume/dialog';
+    }
+}

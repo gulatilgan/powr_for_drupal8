@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrinstagramfeed.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrinstagramfeed_theme() {
+    global $base_url;
+    return [
+        'powrinstagramfeed_config_popup' => [
+            'template'  => 'powrinstagramfeed_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrinstagramfeed_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrinstagramfeed-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrinstagramfeed-installed']);
+        setcookie('powrinstagramfeed-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrinstagramfeed-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrinstagramfeed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrinstagramfeed-installed'])) {
+        $form['powrinstagramfeed_config_popup'] = [
+            '#theme' => 'powrinstagramfeed_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrinstagramfeed/dialog';
+    }
+}

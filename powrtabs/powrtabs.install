@@ -1,0 +1,6 @@
+<?php
+
+function powrtabs_install()
+{
+    setcookie("powrtabs-installed", 1, time() + (86400 * 30), "/");
+}

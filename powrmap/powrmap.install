@@ -1,0 +1,6 @@
+<?php
+
+function powrmap_install()
+{
+    setcookie("powrmap-installed", 1, time() + (86400 * 30), "/");
+}

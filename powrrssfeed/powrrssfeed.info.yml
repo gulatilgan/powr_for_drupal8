@@ -1,0 +1,8 @@
+name: POWr RSS Feed
+type: module
+description: Combine and display content from multiple RSS feeds!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

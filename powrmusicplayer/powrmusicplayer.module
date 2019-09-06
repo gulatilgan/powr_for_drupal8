@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrmusicplayer.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrmusicplayer_theme() {
+    global $base_url;
+    return [
+        'powrmusicplayer_config_popup' => [
+            'template'  => 'powrmusicplayer_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrmusicplayer_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrmusicplayer-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrmusicplayer-installed']);
+        setcookie('powrmusicplayer-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrmusicplayer-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrmusicplayer_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrmusicplayer-installed'])) {
+        $form['powrmusicplayer_config_popup'] = [
+            '#theme' => 'powrmusicplayer_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrmusicplayer/dialog';
+    }
+}

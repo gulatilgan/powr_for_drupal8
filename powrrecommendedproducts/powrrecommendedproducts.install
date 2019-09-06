@@ -1,0 +1,6 @@
+<?php
+
+function powrrecommendedproducts_install()
+{
+    setcookie("powrrecommendedproducts-installed", 1, time() + (86400 * 30), "/");
+}

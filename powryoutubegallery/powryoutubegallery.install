@@ -1,0 +1,6 @@
+<?php
+
+function powryoutubegallery_install()
+{
+    setcookie("powryoutubegallery-installed", 1, time() + (86400 * 30), "/");
+}

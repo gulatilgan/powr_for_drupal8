@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrorderform.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrorderform_theme() {
+    global $base_url;
+    return [
+        'powrorderform_config_popup' => [
+            'template'  => 'powrorderform_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrorderform_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrorderform-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrorderform-installed']);
+        setcookie('powrorderform-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrorderform-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrorderform_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrorderform-installed'])) {
+        $form['powrorderform_config_popup'] = [
+            '#theme' => 'powrorderform_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrorderform/dialog';
+    }
+}

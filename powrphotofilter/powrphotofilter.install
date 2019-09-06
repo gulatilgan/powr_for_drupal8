@@ -1,0 +1,6 @@
+<?php
+
+function powrphotofilter_install()
+{
+    setcookie("powrphotofilter-installed", 1, time() + (86400 * 30), "/");
+}

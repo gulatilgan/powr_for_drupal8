@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrsocialmediaicons.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrsocialmediaicons_theme() {
+    global $base_url;
+    return [
+        'powrsocialmediaicons_config_popup' => [
+            'template'  => 'powrsocialmediaicons_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrsocialmediaicons_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrsocialmediaicons-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrsocialmediaicons-installed']);
+        setcookie('powrsocialmediaicons-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrsocialmediaicons-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrsocialmediaicons_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrsocialmediaicons-installed'])) {
+        $form['powrsocialmediaicons_config_popup'] = [
+            '#theme' => 'powrsocialmediaicons_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrsocialmediaicons/dialog';
+    }
+}

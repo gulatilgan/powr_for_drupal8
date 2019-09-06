@@ -1,0 +1,5 @@
+dialog:
+  js:
+    js/powrsalespop.dialog.js: { minified: true }
+  dependencies:
+    - core/drupal.dialog

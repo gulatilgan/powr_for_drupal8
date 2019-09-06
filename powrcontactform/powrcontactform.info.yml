@@ -1,0 +1,8 @@
+name: POWr Contact Form
+type: module
+description: Capture contact info with a simple form
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

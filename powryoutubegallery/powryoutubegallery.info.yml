@@ -1,0 +1,8 @@
+name: POWr YouTube Gallery
+type: module
+description: Grow your audience with an embeddable YouTube gallery
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

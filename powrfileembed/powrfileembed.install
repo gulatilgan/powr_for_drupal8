@@ -1,0 +1,6 @@
+<?php
+
+function powrfileembed_install()
+{
+    setcookie("powrfileembed-installed", 1, time() + (86400 * 30), "/");
+}

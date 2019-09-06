@@ -1,0 +1,6 @@
+<?php
+
+function powrpoll_install()
+{
+    setcookie("powrpoll-installed", 1, time() + (86400 * 30), "/");
+}

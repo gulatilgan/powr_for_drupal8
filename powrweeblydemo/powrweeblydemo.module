@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrweeblydemo.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrweeblydemo_theme() {
+    global $base_url;
+    return [
+        'powrweeblydemo_config_popup' => [
+            'template'  => 'powrweeblydemo_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrweeblydemo_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrweeblydemo-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrweeblydemo-installed']);
+        setcookie('powrweeblydemo-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrweeblydemo-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrweeblydemo_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrweeblydemo-installed'])) {
+        $form['powrweeblydemo_config_popup'] = [
+            '#theme' => 'powrweeblydemo_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrweeblydemo/dialog';
+    }
+}

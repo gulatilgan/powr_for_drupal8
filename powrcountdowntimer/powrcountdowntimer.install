@@ -1,0 +1,6 @@
+<?php
+
+function powrcountdowntimer_install()
+{
+    setcookie("powrcountdowntimer-installed", 1, time() + (86400 * 30), "/");
+}

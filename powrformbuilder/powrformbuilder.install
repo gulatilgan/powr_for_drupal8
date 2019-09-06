@@ -1,0 +1,6 @@
+<?php
+
+function powrformbuilder_install()
+{
+    setcookie("powrformbuilder-installed", 1, time() + (86400 * 30), "/");
+}

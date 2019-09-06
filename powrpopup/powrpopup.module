@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrpopup.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrpopup_theme() {
+    global $base_url;
+    return [
+        'powrpopup_config_popup' => [
+            'template'  => 'powrpopup_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrpopup_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrpopup-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrpopup-installed']);
+        setcookie('powrpopup-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrpopup-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrpopup_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrpopup-installed'])) {
+        $form['powrpopup_config_popup'] = [
+            '#theme' => 'powrpopup_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrpopup/dialog';
+    }
+}

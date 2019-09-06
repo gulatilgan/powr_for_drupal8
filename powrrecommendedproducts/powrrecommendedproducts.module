@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrrecommendedproducts.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrrecommendedproducts_theme() {
+    global $base_url;
+    return [
+        'powrrecommendedproducts_config_popup' => [
+            'template'  => 'powrrecommendedproducts_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrrecommendedproducts_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrrecommendedproducts-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrrecommendedproducts-installed']);
+        setcookie('powrrecommendedproducts-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrrecommendedproducts-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrrecommendedproducts_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrrecommendedproducts-installed'])) {
+        $form['powrrecommendedproducts_config_popup'] = [
+            '#theme' => 'powrrecommendedproducts_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrrecommendedproducts/dialog';
+    }
+}

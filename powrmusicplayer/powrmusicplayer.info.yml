@@ -1,0 +1,8 @@
+name: POWr Music Player
+type: module
+description: Embed audio tracks in any website
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

@@ -1,0 +1,6 @@
+<?php
+
+function powrholidaycountdown_install()
+{
+    setcookie("powrholidaycountdown-installed", 1, time() + (86400 * 30), "/");
+}

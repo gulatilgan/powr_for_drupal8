@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrscrolltotop.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrscrolltotop_theme() {
+    global $base_url;
+    return [
+        'powrscrolltotop_config_popup' => [
+            'template'  => 'powrscrolltotop_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrscrolltotop_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrscrolltotop-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrscrolltotop-installed']);
+        setcookie('powrscrolltotop-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrscrolltotop-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrscrolltotop_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrscrolltotop-installed'])) {
+        $form['powrscrolltotop_config_popup'] = [
+            '#theme' => 'powrscrolltotop_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrscrolltotop/dialog';
+    }
+}

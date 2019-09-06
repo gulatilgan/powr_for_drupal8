@@ -1,0 +1,6 @@
+<?php
+
+function powrflickrgallery_install()
+{
+    setcookie("powrflickrgallery-installed", 1, time() + (86400 * 30), "/");
+}

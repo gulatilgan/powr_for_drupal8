@@ -1,0 +1,8 @@
+name: POWr Social Media Icons
+type: module
+description: Grow your social media following with linked icons
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

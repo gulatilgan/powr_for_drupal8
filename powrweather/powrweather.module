@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrweather.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrweather_theme() {
+    global $base_url;
+    return [
+        'powrweather_config_popup' => [
+            'template'  => 'powrweather_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrweather_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrweather-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrweather-installed']);
+        setcookie('powrweather-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrweather-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrweather_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrweather-installed'])) {
+        $form['powrweather_config_popup'] = [
+            '#theme' => 'powrweather_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrweather/dialog';
+    }
+}

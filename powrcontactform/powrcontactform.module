@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrcontactform.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrcontactform_theme() {
+    global $base_url;
+    return [
+        'powrcontactform_config_popup' => [
+            'template'  => 'powrcontactform_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrcontactform_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrcontactform-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrcontactform-installed']);
+        setcookie('powrcontactform-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrcontactform-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrcontactform_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrcontactform-installed'])) {
+        $form['powrcontactform_config_popup'] = [
+            '#theme' => 'powrcontactform_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrcontactform/dialog';
+    }
+}

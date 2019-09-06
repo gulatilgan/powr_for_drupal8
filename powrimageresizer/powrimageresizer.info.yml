@@ -1,0 +1,8 @@
+name: POWr Image Resizer
+type: module
+description: Adjust the size, shape, and filter for a single image.
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

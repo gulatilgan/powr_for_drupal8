@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrpinterestfeed.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrpinterestfeed_theme() {
+    global $base_url;
+    return [
+        'powrpinterestfeed_config_popup' => [
+            'template'  => 'powrpinterestfeed_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrpinterestfeed_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrpinterestfeed-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrpinterestfeed-installed']);
+        setcookie('powrpinterestfeed-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrpinterestfeed-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrpinterestfeed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrpinterestfeed-installed'])) {
+        $form['powrpinterestfeed_config_popup'] = [
+            '#theme' => 'powrpinterestfeed_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrpinterestfeed/dialog';
+    }
+}

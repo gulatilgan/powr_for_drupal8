@@ -1,0 +1,82 @@
+<?php
+
+namespace Drupal\powrecommerce\Plugin\CKEditorPlugin;
+
+use Drupal\ckeditor\CKEditorPluginInterface;
+use Drupal\ckeditor\CKEditorPluginContextualInterface;
+use Drupal\ckeditor\CKEditorPluginButtonsInterface;
+use Drupal\Component\Plugin\PluginBase;
+use Drupal\editor\Entity\Editor;
+
+/**
+ * Defines the "powrecommerce" plugin, with a CKEditor.
+ *
+ * @CKEditorPlugin(
+ *   id = "powrecommerce",
+ *   label = @Translation("powrecommerce Plugin")
+ * )
+ */
+class powrecommerce extends PluginBase implements CKEditorPluginInterface, CKEditorPluginContextualInterface, CKEditorPluginButtonsInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEnabled(Editor $editor) {
+    return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDependencies(Editor $editor) {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLibraries(Editor $editor) {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isInternal() {
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFile() {
+    return drupal_get_path('module', 'powrecommerce') . '/js/plugins/powrecommerce/plugin.js';
+  }
+
+  /**
+   * @return array
+   */
+  public function getButtons() {
+    $powr_ecommerce_icon = drupal_get_path('module', 'powrecommerce') . '/js/plugins/powrecommerce/icons/ecommerce.png';
+    $powr_icon = drupal_get_path('module', 'powrecommerce') . '/js/plugins/powrecommerce/icons/powr.png';
+
+    return [
+      'powr_apps_dropdown' => [
+        'label' => t('POWr Plugins'),
+        'image' => $powr_icon,
+      ],
+      'powr_ecommerce' => [
+        'label' => t('POWr Ecommerce'),
+        'image' => $powr_ecommerce_icon,
+      ]
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfig(Editor $editor) {
+    return [];
+  }
+
+}

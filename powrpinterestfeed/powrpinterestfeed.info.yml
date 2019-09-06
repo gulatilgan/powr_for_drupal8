@@ -1,0 +1,8 @@
+name: POWr Pinterest Feed
+type: module
+description: Get more pins with an automatic Pinterest feed
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

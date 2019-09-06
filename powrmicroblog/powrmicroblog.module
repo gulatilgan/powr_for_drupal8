@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrmicroblog.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrmicroblog_theme() {
+    global $base_url;
+    return [
+        'powrmicroblog_config_popup' => [
+            'template'  => 'powrmicroblog_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrmicroblog_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrmicroblog-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrmicroblog-installed']);
+        setcookie('powrmicroblog-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrmicroblog-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrmicroblog_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrmicroblog-installed'])) {
+        $form['powrmicroblog_config_popup'] = [
+            '#theme' => 'powrmicroblog_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrmicroblog/dialog';
+    }
+}

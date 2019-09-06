@@ -1,0 +1,8 @@
+name: POWr Mailing List
+type: module
+description: Grow your mailing list with zero effort
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrhitcounter.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrhitcounter_theme() {
+    global $base_url;
+    return [
+        'powrhitcounter_config_popup' => [
+            'template'  => 'powrhitcounter_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrhitcounter_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrhitcounter-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrhitcounter-installed']);
+        setcookie('powrhitcounter-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrhitcounter-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrhitcounter_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrhitcounter-installed'])) {
+        $form['powrhitcounter_config_popup'] = [
+            '#theme' => 'powrhitcounter_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrhitcounter/dialog';
+    }
+}

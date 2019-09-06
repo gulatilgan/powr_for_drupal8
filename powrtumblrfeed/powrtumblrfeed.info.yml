@@ -1,0 +1,8 @@
+name: POWr Tumblr Feed
+type: module
+description: Display multiple tumblr accounts in a single feed!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrjobboard.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrjobboard_theme() {
+    global $base_url;
+    return [
+        'powrjobboard_config_popup' => [
+            'template'  => 'powrjobboard_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrjobboard_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrjobboard-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrjobboard-installed']);
+        setcookie('powrjobboard-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrjobboard-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrjobboard_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrjobboard-installed'])) {
+        $form['powrjobboard_config_popup'] = [
+            '#theme' => 'powrjobboard_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrjobboard/dialog';
+    }
+}

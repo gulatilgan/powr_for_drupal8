@@ -1,0 +1,8 @@
+name: POWr Reviews
+type: module
+description: Collect and display social proof with visitor reviews
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrcomments.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrcomments_theme() {
+    global $base_url;
+    return [
+        'powrcomments_config_popup' => [
+            'template'  => 'powrcomments_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrcomments_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrcomments-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrcomments-installed']);
+        setcookie('powrcomments-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrcomments-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrcomments_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrcomments-installed'])) {
+        $form['powrcomments_config_popup'] = [
+            '#theme' => 'powrcomments_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrcomments/dialog';
+    }
+}

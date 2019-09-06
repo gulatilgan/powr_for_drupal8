@@ -1,0 +1,6 @@
+<?php
+
+function powrmenu_install()
+{
+    setcookie("powrmenu-installed", 1, time() + (86400 * 30), "/");
+}

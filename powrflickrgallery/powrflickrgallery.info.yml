@@ -1,0 +1,8 @@
+name: POWr Flickr Gallery
+type: module
+description: Get more Flickr followers with a custom gallery
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

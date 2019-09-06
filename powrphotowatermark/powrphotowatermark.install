@@ -1,0 +1,6 @@
+<?php
+
+function powrphotowatermark_install()
+{
+    setcookie("powrphotowatermark-installed", 1, time() + (86400 * 30), "/");
+}

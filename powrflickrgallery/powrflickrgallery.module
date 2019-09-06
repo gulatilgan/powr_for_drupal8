@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrflickrgallery.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrflickrgallery_theme() {
+    global $base_url;
+    return [
+        'powrflickrgallery_config_popup' => [
+            'template'  => 'powrflickrgallery_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrflickrgallery_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrflickrgallery-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrflickrgallery-installed']);
+        setcookie('powrflickrgallery-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrflickrgallery-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrflickrgallery_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrflickrgallery-installed'])) {
+        $form['powrflickrgallery_config_popup'] = [
+            '#theme' => 'powrflickrgallery_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrflickrgallery/dialog';
+    }
+}

@@ -1,0 +1,6 @@
+<?php
+
+function powrweeblydemo_install()
+{
+    setcookie("powrweeblydemo-installed", 1, time() + (86400 * 30), "/");
+}

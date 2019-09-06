@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powreventgallery.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powreventgallery_theme() {
+    global $base_url;
+    return [
+        'powreventgallery_config_popup' => [
+            'template'  => 'powreventgallery_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powreventgallery_page_top(array &$page_top) {
+    if (isset($_COOKIE['powreventgallery-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powreventgallery-installed']);
+        setcookie('powreventgallery-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powreventgallery-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powreventgallery_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powreventgallery-installed'])) {
+        $form['powreventgallery_config_popup'] = [
+            '#theme' => 'powreventgallery_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powreventgallery/dialog';
+    }
+}

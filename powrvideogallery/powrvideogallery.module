@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrvideogallery.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrvideogallery_theme() {
+    global $base_url;
+    return [
+        'powrvideogallery_config_popup' => [
+            'template'  => 'powrvideogallery_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrvideogallery_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrvideogallery-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrvideogallery-installed']);
+        setcookie('powrvideogallery-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrvideogallery-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrvideogallery_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrvideogallery-installed'])) {
+        $form['powrvideogallery_config_popup'] = [
+            '#theme' => 'powrvideogallery_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrvideogallery/dialog';
+    }
+}

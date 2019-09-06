@@ -1,0 +1,6 @@
+<?php
+
+function powrcontactform_install()
+{
+    setcookie("powrcontactform-installed", 1, time() + (86400 * 30), "/");
+}

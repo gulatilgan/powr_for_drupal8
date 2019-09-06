@@ -1,0 +1,8 @@
+name: POWr Holiday Countdown
+type: module
+description: Count down to any holiday, birthday, or special event!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

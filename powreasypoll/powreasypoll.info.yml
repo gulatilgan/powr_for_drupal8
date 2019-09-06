@@ -1,0 +1,8 @@
+name: POWr Easy Poll
+type: module
+description: Easy Poll
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

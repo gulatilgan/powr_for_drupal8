@@ -1,0 +1,6 @@
+<?php
+
+function powremaillistsignup_install()
+{
+    setcookie("powremaillistsignup-installed", 1, time() + (86400 * 30), "/");
+}

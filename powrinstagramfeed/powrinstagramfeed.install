@@ -1,0 +1,6 @@
+<?php
+
+function powrinstagramfeed_install()
+{
+    setcookie("powrinstagramfeed-installed", 1, time() + (86400 * 30), "/");
+}

@@ -1,0 +1,8 @@
+name: POWr Graph
+type: module
+description: Graphs and charts for any website!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

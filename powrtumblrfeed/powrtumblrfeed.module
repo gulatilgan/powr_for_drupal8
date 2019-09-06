@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrtumblrfeed.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrtumblrfeed_theme() {
+    global $base_url;
+    return [
+        'powrtumblrfeed_config_popup' => [
+            'template'  => 'powrtumblrfeed_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrtumblrfeed_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrtumblrfeed-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrtumblrfeed-installed']);
+        setcookie('powrtumblrfeed-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrtumblrfeed-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrtumblrfeed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrtumblrfeed-installed'])) {
+        $form['powrtumblrfeed_config_popup'] = [
+            '#theme' => 'powrtumblrfeed_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrtumblrfeed/dialog';
+    }
+}

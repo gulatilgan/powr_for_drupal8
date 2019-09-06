@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powreventslider.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powreventslider_theme() {
+    global $base_url;
+    return [
+        'powreventslider_config_popup' => [
+            'template'  => 'powreventslider_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powreventslider_page_top(array &$page_top) {
+    if (isset($_COOKIE['powreventslider-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powreventslider-installed']);
+        setcookie('powreventslider-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powreventslider-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powreventslider_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powreventslider-installed'])) {
+        $form['powreventslider_config_popup'] = [
+            '#theme' => 'powreventslider_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powreventslider/dialog';
+    }
+}

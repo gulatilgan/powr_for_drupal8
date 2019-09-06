@@ -1,0 +1,8 @@
+name: POWr Price Table
+type: module
+description: Sell more with side-by-side pricing tables
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

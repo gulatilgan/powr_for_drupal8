@@ -1,0 +1,6 @@
+<?php
+
+function powrreviews_install()
+{
+    setcookie("powrreviews-installed", 1, time() + (86400 * 30), "/");
+}

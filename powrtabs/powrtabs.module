@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrtabs.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrtabs_theme() {
+    global $base_url;
+    return [
+        'powrtabs_config_popup' => [
+            'template'  => 'powrtabs_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrtabs_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrtabs-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrtabs-installed']);
+        setcookie('powrtabs-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrtabs-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrtabs_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrtabs-installed'])) {
+        $form['powrtabs_config_popup'] = [
+            '#theme' => 'powrtabs_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrtabs/dialog';
+    }
+}

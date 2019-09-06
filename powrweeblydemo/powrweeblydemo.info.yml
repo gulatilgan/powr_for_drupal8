@@ -1,0 +1,8 @@
+name: POWr Weebly Demo
+type: module
+description: Map Demo for Weebly
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

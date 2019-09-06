@@ -1,0 +1,6 @@
+<?php
+
+function powrvimeogallery_install()
+{
+    setcookie("powrvimeogallery-installed", 1, time() + (86400 * 30), "/");
+}

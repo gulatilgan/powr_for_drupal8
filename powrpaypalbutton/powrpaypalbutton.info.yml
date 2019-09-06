@@ -1,0 +1,8 @@
+name: POWr PayPal Button
+type: module
+description: Get paid instantly with a custom PayPal Button
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

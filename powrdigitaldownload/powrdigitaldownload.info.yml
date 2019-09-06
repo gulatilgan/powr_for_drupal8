@@ -1,0 +1,8 @@
+name: POWr Digital Download
+type: module
+description: Sell music, videos, ebooks, and more!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

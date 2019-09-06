@@ -1,0 +1,6 @@
+<?php
+
+function powrpricetable_install()
+{
+    setcookie("powrpricetable-installed", 1, time() + (86400 * 30), "/");
+}

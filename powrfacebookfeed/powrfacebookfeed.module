@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrfacebookfeed.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrfacebookfeed_theme() {
+    global $base_url;
+    return [
+        'powrfacebookfeed_config_popup' => [
+            'template'  => 'powrfacebookfeed_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrfacebookfeed_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrfacebookfeed-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrfacebookfeed-installed']);
+        setcookie('powrfacebookfeed-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrfacebookfeed-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrfacebookfeed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrfacebookfeed-installed'])) {
+        $form['powrfacebookfeed_config_popup'] = [
+            '#theme' => 'powrfacebookfeed_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrfacebookfeed/dialog';
+    }
+}

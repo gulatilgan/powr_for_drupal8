@@ -1,0 +1,6 @@
+<?php
+
+function powrpinterestfeed_install()
+{
+    setcookie("powrpinterestfeed-installed", 1, time() + (86400 * 30), "/");
+}

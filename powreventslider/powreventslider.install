@@ -1,0 +1,6 @@
+<?php
+
+function powreventslider_install()
+{
+    setcookie("powreventslider-installed", 1, time() + (86400 * 30), "/");
+}

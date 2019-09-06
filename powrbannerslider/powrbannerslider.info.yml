@@ -1,0 +1,8 @@
+name: POWr Banner Slider
+type: module
+description: Beautiful sliding banners for images and video.
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

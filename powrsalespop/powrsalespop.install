@@ -1,0 +1,6 @@
+<?php
+
+function powrsalespop_install()
+{
+    setcookie("powrsalespop-installed", 1, time() + (86400 * 30), "/");
+}

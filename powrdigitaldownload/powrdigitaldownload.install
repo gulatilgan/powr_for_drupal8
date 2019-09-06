@@ -1,0 +1,6 @@
+<?php
+
+function powrdigitaldownload_install()
+{
+    setcookie("powrdigitaldownload-installed", 1, time() + (86400 * 30), "/");
+}

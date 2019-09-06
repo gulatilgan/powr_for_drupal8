@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrsurvey.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrsurvey_theme() {
+    global $base_url;
+    return [
+        'powrsurvey_config_popup' => [
+            'template'  => 'powrsurvey_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrsurvey_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrsurvey-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrsurvey-installed']);
+        setcookie('powrsurvey-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrsurvey-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrsurvey_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrsurvey-installed'])) {
+        $form['powrsurvey_config_popup'] = [
+            '#theme' => 'powrsurvey_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrsurvey/dialog';
+    }
+}

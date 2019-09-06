@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrpoll.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrpoll_theme() {
+    global $base_url;
+    return [
+        'powrpoll_config_popup' => [
+            'template'  => 'powrpoll_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrpoll_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrpoll-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrpoll-installed']);
+        setcookie('powrpoll-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrpoll-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrpoll_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrpoll-installed'])) {
+        $form['powrpoll_config_popup'] = [
+            '#theme' => 'powrpoll_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrpoll/dialog';
+    }
+}

@@ -1,0 +1,6 @@
+<?php
+
+function powrsurvey_install()
+{
+    setcookie("powrsurvey-installed", 1, time() + (86400 * 30), "/");
+}

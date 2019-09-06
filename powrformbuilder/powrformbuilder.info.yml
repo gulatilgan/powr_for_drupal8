@@ -1,0 +1,8 @@
+name: POWr Form Builder
+type: module
+description: Create any type of form and customize it to match your site.
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

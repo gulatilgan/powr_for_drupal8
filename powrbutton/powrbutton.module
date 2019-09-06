@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrbutton.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrbutton_theme() {
+    global $base_url;
+    return [
+        'powrbutton_config_popup' => [
+            'template'  => 'powrbutton_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrbutton_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrbutton-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrbutton-installed']);
+        setcookie('powrbutton-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrbutton-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrbutton_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrbutton-installed'])) {
+        $form['powrbutton_config_popup'] = [
+            '#theme' => 'powrbutton_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrbutton/dialog';
+    }
+}

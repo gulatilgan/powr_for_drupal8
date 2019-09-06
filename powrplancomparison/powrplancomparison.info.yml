@@ -1,0 +1,8 @@
+name: POWr Plan Comparison
+type: module
+description: Display and sell products, plans, and services in a side-by-side comparison! 
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrdigitaldownload.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrdigitaldownload_theme() {
+    global $base_url;
+    return [
+        'powrdigitaldownload_config_popup' => [
+            'template'  => 'powrdigitaldownload_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrdigitaldownload_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrdigitaldownload-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrdigitaldownload-installed']);
+        setcookie('powrdigitaldownload-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrdigitaldownload-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrdigitaldownload_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrdigitaldownload-installed'])) {
+        $form['powrdigitaldownload_config_popup'] = [
+            '#theme' => 'powrdigitaldownload_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrdigitaldownload/dialog';
+    }
+}

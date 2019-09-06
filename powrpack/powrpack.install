@@ -1,0 +1,6 @@
+<?php
+
+function powrpack_install()
+{
+    setcookie("powrpack-installed", 1, time() + (86400 * 30), "/");
+}

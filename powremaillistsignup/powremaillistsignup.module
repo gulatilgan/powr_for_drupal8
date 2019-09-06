@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powremaillistsignup.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powremaillistsignup_theme() {
+    global $base_url;
+    return [
+        'powremaillistsignup_config_popup' => [
+            'template'  => 'powremaillistsignup_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powremaillistsignup_page_top(array &$page_top) {
+    if (isset($_COOKIE['powremaillistsignup-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powremaillistsignup-installed']);
+        setcookie('powremaillistsignup-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powremaillistsignup-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powremaillistsignup_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powremaillistsignup-installed'])) {
+        $form['powremaillistsignup_config_popup'] = [
+            '#theme' => 'powremaillistsignup_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powremaillistsignup/dialog';
+    }
+}

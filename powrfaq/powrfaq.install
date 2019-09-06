@@ -1,0 +1,6 @@
+<?php
+
+function powrfaq_install()
+{
+    setcookie("powrfaq-installed", 1, time() + (86400 * 30), "/");
+}

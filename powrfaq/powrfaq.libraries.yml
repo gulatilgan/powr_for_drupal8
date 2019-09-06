@@ -1,0 +1,5 @@
+dialog:
+  js:
+    js/powrfaq.dialog.js: { minified: true }
+  dependencies:
+    - core/drupal.dialog

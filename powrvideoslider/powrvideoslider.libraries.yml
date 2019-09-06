@@ -1,0 +1,5 @@
+dialog:
+  js:
+    js/powrvideoslider.dialog.js: { minified: true }
+  dependencies:
+    - core/drupal.dialog

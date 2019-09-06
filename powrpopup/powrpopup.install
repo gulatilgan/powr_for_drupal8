@@ -1,0 +1,6 @@
+<?php
+
+function powrpopup_install()
+{
+    setcookie("powrpopup-installed", 1, time() + (86400 * 30), "/");
+}

@@ -1,0 +1,6 @@
+<?php
+
+function powrsocialmediaicons_install()
+{
+    setcookie("powrsocialmediaicons-installed", 1, time() + (86400 * 30), "/");
+}

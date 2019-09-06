@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrdonationbutton.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrdonationbutton_theme() {
+    global $base_url;
+    return [
+        'powrdonationbutton_config_popup' => [
+            'template'  => 'powrdonationbutton_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrdonationbutton_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrdonationbutton-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrdonationbutton-installed']);
+        setcookie('powrdonationbutton-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrdonationbutton-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrdonationbutton_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrdonationbutton-installed'])) {
+        $form['powrdonationbutton_config_popup'] = [
+            '#theme' => 'powrdonationbutton_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrdonationbutton/dialog';
+    }
+}

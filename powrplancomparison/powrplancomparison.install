@@ -1,0 +1,6 @@
+<?php
+
+function powrplancomparison_install()
+{
+    setcookie("powrplancomparison-installed", 1, time() + (86400 * 30), "/");
+}

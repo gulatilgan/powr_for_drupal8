@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrholidaycountdown.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrholidaycountdown_theme() {
+    global $base_url;
+    return [
+        'powrholidaycountdown_config_popup' => [
+            'template'  => 'powrholidaycountdown_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrholidaycountdown_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrholidaycountdown-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrholidaycountdown-installed']);
+        setcookie('powrholidaycountdown-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrholidaycountdown-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrholidaycountdown_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrholidaycountdown-installed'])) {
+        $form['powrholidaycountdown_config_popup'] = [
+            '#theme' => 'powrholidaycountdown_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrholidaycountdown/dialog';
+    }
+}

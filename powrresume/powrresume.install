@@ -1,0 +1,6 @@
+<?php
+
+function powrresume_install()
+{
+    setcookie("powrresume-installed", 1, time() + (86400 * 30), "/");
+}

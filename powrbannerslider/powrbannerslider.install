@@ -1,0 +1,6 @@
+<?php
+
+function powrbannerslider_install()
+{
+    setcookie("powrbannerslider-installed", 1, time() + (86400 * 30), "/");
+}

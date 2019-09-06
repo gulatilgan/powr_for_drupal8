@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrpricetable.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrpricetable_theme() {
+    global $base_url;
+    return [
+        'powrpricetable_config_popup' => [
+            'template'  => 'powrpricetable_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrpricetable_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrpricetable-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrpricetable-installed']);
+        setcookie('powrpricetable-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrpricetable-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrpricetable_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrpricetable-installed'])) {
+        $form['powrpricetable_config_popup'] = [
+            '#theme' => 'powrpricetable_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrpricetable/dialog';
+    }
+}

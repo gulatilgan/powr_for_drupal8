@@ -1,0 +1,6 @@
+<?php
+
+function powrhitcounter_install()
+{
+    setcookie("powrhitcounter-installed", 1, time() + (86400 * 30), "/");
+}

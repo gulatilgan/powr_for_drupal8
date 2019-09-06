@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrfaq.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrfaq_theme() {
+    global $base_url;
+    return [
+        'powrfaq_config_popup' => [
+            'template'  => 'powrfaq_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrfaq_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrfaq-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrfaq-installed']);
+        setcookie('powrfaq-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrfaq-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrfaq_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrfaq-installed'])) {
+        $form['powrfaq_config_popup'] = [
+            '#theme' => 'powrfaq_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrfaq/dialog';
+    }
+}

@@ -1,0 +1,6 @@
+<?php
+
+function powreventgallery_install()
+{
+    setcookie("powreventgallery-installed", 1, time() + (86400 * 30), "/");
+}

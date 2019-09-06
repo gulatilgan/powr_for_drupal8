@@ -1,0 +1,8 @@
+name: POWr Event Gallery
+type: module
+description: Showcase upcoming events in a beautiful Pinterest-style gallery!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

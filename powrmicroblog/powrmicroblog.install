@@ -1,0 +1,6 @@
+<?php
+
+function powrmicroblog_install()
+{
+    setcookie("powrmicroblog-installed", 1, time() + (86400 * 30), "/");
+}

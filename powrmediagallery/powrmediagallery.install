@@ -1,0 +1,6 @@
+<?php
+
+function powrmediagallery_install()
+{
+    setcookie("powrmediagallery-installed", 1, time() + (86400 * 30), "/");
+}

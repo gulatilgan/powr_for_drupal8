@@ -1,0 +1,8 @@
+name: POWr Order Form
+type: module
+description: Sell anything on any site.
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

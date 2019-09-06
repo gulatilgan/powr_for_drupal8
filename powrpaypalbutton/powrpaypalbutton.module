@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrpaypalbutton.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrpaypalbutton_theme() {
+    global $base_url;
+    return [
+        'powrpaypalbutton_config_popup' => [
+            'template'  => 'powrpaypalbutton_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrpaypalbutton_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrpaypalbutton-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrpaypalbutton-installed']);
+        setcookie('powrpaypalbutton-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrpaypalbutton-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrpaypalbutton_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrpaypalbutton-installed'])) {
+        $form['powrpaypalbutton_config_popup'] = [
+            '#theme' => 'powrpaypalbutton_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrpaypalbutton/dialog';
+    }
+}

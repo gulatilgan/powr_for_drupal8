@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrcountdowntimer.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrcountdowntimer_theme() {
+    global $base_url;
+    return [
+        'powrcountdowntimer_config_popup' => [
+            'template'  => 'powrcountdowntimer_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrcountdowntimer_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrcountdowntimer-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrcountdowntimer-installed']);
+        setcookie('powrcountdowntimer-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrcountdowntimer-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrcountdowntimer_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrcountdowntimer-installed'])) {
+        $form['powrcountdowntimer_config_popup'] = [
+            '#theme' => 'powrcountdowntimer_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrcountdowntimer/dialog';
+    }
+}

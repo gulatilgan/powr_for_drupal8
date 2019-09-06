@@ -1,0 +1,6 @@
+<?php
+
+function powrdonationbutton_install()
+{
+    setcookie("powrdonationbutton-installed", 1, time() + (86400 * 30), "/");
+}

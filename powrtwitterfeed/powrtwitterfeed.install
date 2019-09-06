@@ -1,0 +1,6 @@
+<?php
+
+function powrtwitterfeed_install()
+{
+    setcookie("powrtwitterfeed-installed", 1, time() + (86400 * 30), "/");
+}

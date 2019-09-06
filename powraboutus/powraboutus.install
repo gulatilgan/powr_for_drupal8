@@ -1,0 +1,6 @@
+<?php
+
+function powraboutus_install()
+{
+    setcookie("powraboutus-installed", 1, time() + (86400 * 30), "/");
+}

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrvideoslider.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrvideoslider_theme() {
+    global $base_url;
+    return [
+        'powrvideoslider_config_popup' => [
+            'template'  => 'powrvideoslider_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrvideoslider_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrvideoslider-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrvideoslider-installed']);
+        setcookie('powrvideoslider-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrvideoslider-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrvideoslider_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrvideoslider-installed'])) {
+        $form['powrvideoslider_config_popup'] = [
+            '#theme' => 'powrvideoslider_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrvideoslider/dialog';
+    }
+}

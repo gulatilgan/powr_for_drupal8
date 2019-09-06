@@ -1,0 +1,6 @@
+<?php
+
+function powrrssfeed_install()
+{
+    setcookie("powrrssfeed-installed", 1, time() + (86400 * 30), "/");
+}

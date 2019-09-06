@@ -1,0 +1,6 @@
+<?php
+
+function powrjobboard_install()
+{
+    setcookie("powrjobboard-installed", 1, time() + (86400 * 30), "/");
+}

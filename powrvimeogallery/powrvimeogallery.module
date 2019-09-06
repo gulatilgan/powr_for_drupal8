@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrvimeogallery.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrvimeogallery_theme() {
+    global $base_url;
+    return [
+        'powrvimeogallery_config_popup' => [
+            'template'  => 'powrvimeogallery_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrvimeogallery_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrvimeogallery-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrvimeogallery-installed']);
+        setcookie('powrvimeogallery-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrvimeogallery-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrvimeogallery_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrvimeogallery-installed'])) {
+        $form['powrvimeogallery_config_popup'] = [
+            '#theme' => 'powrvimeogallery_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrvimeogallery/dialog';
+    }
+}

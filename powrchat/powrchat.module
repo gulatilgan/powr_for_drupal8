@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrchat.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrchat_theme() {
+    global $base_url;
+    return [
+        'powrchat_config_popup' => [
+            'template'  => 'powrchat_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrchat_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrchat-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrchat-installed']);
+        setcookie('powrchat-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrchat-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrchat_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrchat-installed'])) {
+        $form['powrchat_config_popup'] = [
+            '#theme' => 'powrchat_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrchat/dialog';
+    }
+}

@@ -1,0 +1,8 @@
+name: POWr Weather
+type: module
+description: Track and display a real-time forecast for any location!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

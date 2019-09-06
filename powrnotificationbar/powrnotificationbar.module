@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrnotificationbar.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrnotificationbar_theme() {
+    global $base_url;
+    return [
+        'powrnotificationbar_config_popup' => [
+            'template'  => 'powrnotificationbar_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrnotificationbar_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrnotificationbar-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrnotificationbar-installed']);
+        setcookie('powrnotificationbar-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrnotificationbar-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrnotificationbar_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrnotificationbar-installed'])) {
+        $form['powrnotificationbar_config_popup'] = [
+            '#theme' => 'powrnotificationbar_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrnotificationbar/dialog';
+    }
+}

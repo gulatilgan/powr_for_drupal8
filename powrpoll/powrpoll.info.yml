@@ -1,0 +1,8 @@
+name: POWr Poll
+type: module
+description: Learn more about your users with a custom poll!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

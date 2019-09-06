@@ -1,0 +1,8 @@
+name: POWr Video Gallery
+type: module
+description: Showcase YouTube and Vimeo videos in a beautiful gallery!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

@@ -1,0 +1,8 @@
+name: POWr Photo Gallery
+type: module
+description: A Pinterest-style gallery for unlimited images!
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

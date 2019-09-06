@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powreasypoll.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powreasypoll_theme() {
+    global $base_url;
+    return [
+        'powreasypoll_config_popup' => [
+            'template'  => 'powreasypoll_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powreasypoll_page_top(array &$page_top) {
+    if (isset($_COOKIE['powreasypoll-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powreasypoll-installed']);
+        setcookie('powreasypoll-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powreasypoll-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powreasypoll_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powreasypoll-installed'])) {
+        $form['powreasypoll_config_popup'] = [
+            '#theme' => 'powreasypoll_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powreasypoll/dialog';
+    }
+}

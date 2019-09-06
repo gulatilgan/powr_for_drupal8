@@ -1,0 +1,8 @@
+name: POWr Twitter Feed
+type: module
+description: Get more followers, favorites, and retweets on Twitter
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

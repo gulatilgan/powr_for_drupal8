@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powryahoolocal.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powryahoolocal_theme() {
+    global $base_url;
+    return [
+        'powryahoolocal_config_popup' => [
+            'template'  => 'powryahoolocal_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powryahoolocal_page_top(array &$page_top) {
+    if (isset($_COOKIE['powryahoolocal-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powryahoolocal-installed']);
+        setcookie('powryahoolocal-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powryahoolocal-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powryahoolocal_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powryahoolocal-installed'])) {
+        $form['powryahoolocal_config_popup'] = [
+            '#theme' => 'powryahoolocal_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powryahoolocal/dialog';
+    }
+}

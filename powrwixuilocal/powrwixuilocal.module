@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrwixuilocal.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrwixuilocal_theme() {
+    global $base_url;
+    return [
+        'powrwixuilocal_config_popup' => [
+            'template'  => 'powrwixuilocal_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrwixuilocal_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrwixuilocal-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrwixuilocal-installed']);
+        setcookie('powrwixuilocal-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrwixuilocal-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrwixuilocal_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrwixuilocal-installed'])) {
+        $form['powrwixuilocal_config_popup'] = [
+            '#theme' => 'powrwixuilocal_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrwixuilocal/dialog';
+    }
+}

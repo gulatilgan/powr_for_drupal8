@@ -1,0 +1,6 @@
+<?php
+
+function powrphotoeditor_install()
+{
+    setcookie("powrphotoeditor-installed", 1, time() + (86400 * 30), "/");
+}

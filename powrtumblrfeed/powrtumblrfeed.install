@@ -1,0 +1,6 @@
+<?php
+
+function powrtumblrfeed_install()
+{
+    setcookie("powrtumblrfeed-installed", 1, time() + (86400 * 30), "/");
+}

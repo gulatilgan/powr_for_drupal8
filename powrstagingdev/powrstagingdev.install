@@ -1,0 +1,6 @@
+<?php
+
+function powrstagingdev_install()
+{
+    setcookie("powrstagingdev-installed", 1, time() + (86400 * 30), "/");
+}

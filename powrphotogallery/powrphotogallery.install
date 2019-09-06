@@ -1,0 +1,6 @@
+<?php
+
+function powrphotogallery_install()
+{
+    setcookie("powrphotogallery-installed", 1, time() + (86400 * 30), "/");
+}

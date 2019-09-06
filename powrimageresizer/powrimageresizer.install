@@ -1,0 +1,6 @@
+<?php
+
+function powrimageresizer_install()
+{
+    setcookie("powrimageresizer-installed", 1, time() + (86400 * 30), "/");
+}

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrmediagallery.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrmediagallery_theme() {
+    global $base_url;
+    return [
+        'powrmediagallery_config_popup' => [
+            'template'  => 'powrmediagallery_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrmediagallery_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrmediagallery-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrmediagallery-installed']);
+        setcookie('powrmediagallery-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrmediagallery-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrmediagallery_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrmediagallery-installed'])) {
+        $form['powrmediagallery_config_popup'] = [
+            '#theme' => 'powrmediagallery_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrmediagallery/dialog';
+    }
+}

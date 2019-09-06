@@ -1,0 +1,8 @@
+name: POWr Popup
+type: module
+description: Capture contacts and promote offers with custom popups
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

@@ -1,0 +1,6 @@
+<?php
+
+function powrfacebookfeed_install()
+{
+    setcookie("powrfacebookfeed-installed", 1, time() + (86400 * 30), "/");
+}

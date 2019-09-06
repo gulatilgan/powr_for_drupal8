@@ -1,0 +1,6 @@
+<?php
+
+function powrlist_install()
+{
+    setcookie("powrlist-installed", 1, time() + (86400 * 30), "/");
+}

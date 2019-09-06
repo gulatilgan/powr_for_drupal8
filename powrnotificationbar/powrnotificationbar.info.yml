@@ -1,0 +1,8 @@
+name: POWr Notification Bar
+type: module
+description: Engage and direct your visitors with an effective & customizable Notification Bar.
+package: CKEditor
+dependencies:
+  - ckeditor
+version: '8.x-1.0'
+core: '8.x'

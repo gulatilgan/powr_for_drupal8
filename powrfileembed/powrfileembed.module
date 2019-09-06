@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrfileembed.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrfileembed_theme() {
+    global $base_url;
+    return [
+        'powrfileembed_config_popup' => [
+            'template'  => 'powrfileembed_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrfileembed_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrfileembed-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrfileembed-installed']);
+        setcookie('powrfileembed-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrfileembed-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrfileembed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrfileembed-installed'])) {
+        $form['powrfileembed_config_popup'] = [
+            '#theme' => 'powrfileembed_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrfileembed/dialog';
+    }
+}

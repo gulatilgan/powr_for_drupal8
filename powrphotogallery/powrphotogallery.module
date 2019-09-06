@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrphotogallery.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrphotogallery_theme() {
+    global $base_url;
+    return [
+        'powrphotogallery_config_popup' => [
+            'template'  => 'powrphotogallery_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrphotogallery_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrphotogallery-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrphotogallery-installed']);
+        setcookie('powrphotogallery-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrphotogallery-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrphotogallery_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrphotogallery-installed'])) {
+        $form['powrphotogallery_config_popup'] = [
+            '#theme' => 'powrphotogallery_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrphotogallery/dialog';
+    }
+}

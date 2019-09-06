@@ -1,0 +1,5 @@
+dialog:
+  js:
+    js/powrmusicplayer.dialog.js: { minified: true }
+  dependencies:
+    - core/drupal.dialog
