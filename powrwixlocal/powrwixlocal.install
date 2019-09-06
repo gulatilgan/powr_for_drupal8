@@ -1,0 +1,6 @@
+<?php
+
+function powrwixlocal_install()
+{
+    setcookie("powrwixlocal-installed", 1, time() + (86400 * 30), "/");
+}

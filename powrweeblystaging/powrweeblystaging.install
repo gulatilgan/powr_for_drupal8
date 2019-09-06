@@ -1,0 +1,6 @@
+<?php
+
+function powrweeblystaging_install()
+{
+    setcookie("powrweeblystaging-installed", 1, time() + (86400 * 30), "/");
+}

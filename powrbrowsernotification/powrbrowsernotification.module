@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrbrowsernotification.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrbrowsernotification_theme() {
+    global $base_url;
+    return [
+        'powrbrowsernotification_config_popup' => [
+            'template'  => 'powrbrowsernotification_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrbrowsernotification_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrbrowsernotification-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrbrowsernotification-installed']);
+        setcookie('powrbrowsernotification-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrbrowsernotification-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrbrowsernotification_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrbrowsernotification-installed'])) {
+        $form['powrbrowsernotification_config_popup'] = [
+            '#theme' => 'powrbrowsernotification_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrbrowsernotification/dialog';
+    }
+}

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrwixdev.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrwixdev_theme() {
+    global $base_url;
+    return [
+        'powrwixdev_config_popup' => [
+            'template'  => 'powrwixdev_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrwixdev_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrwixdev-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrwixdev-installed']);
+        setcookie('powrwixdev-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrwixdev-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrwixdev_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrwixdev-installed'])) {
+        $form['powrwixdev_config_popup'] = [
+            '#theme' => 'powrwixdev_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrwixdev/dialog';
+    }
+}

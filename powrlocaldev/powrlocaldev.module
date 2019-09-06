@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * Contains powrlocaldev.module.
+ */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function powrlocaldev_theme() {
+    global $base_url;
+    return [
+        'powrlocaldev_config_popup' => [
+            'template'  => 'powrlocaldev_config_popup',
+            'render element' => 'dialog'
+        ],
+    ];
+}
+
+function powrlocaldev_page_top(array &$page_top) {
+    if (isset($_COOKIE['powrlocaldev-installed'])) {
+        global $base_url;
+        unset($_COOKIE['powrlocaldev-installed']);
+        setcookie('powrlocaldev-installed', null, -1, '/');
+        $response = new RedirectResponse(Url::fromRoute('system.admin_config_content')->toString().'/formats/?powrlocaldev-installed');
+        $response->send();
+    }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function powrlocaldev_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if (isset($_GET['powrlocaldev-installed'])) {
+        $form['powrlocaldev_config_popup'] = [
+            '#theme' => 'powrlocaldev_config_popup',
+        ];
+        $form["#attached"]["library"][] = 'powrlocaldev/dialog';
+    }
+}

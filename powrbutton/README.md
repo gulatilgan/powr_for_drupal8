@@ -1,18 +1,16 @@
-
-# 🎉 Welcome to POWr Button for Drupal 8 🎉
+# 🎉 Welcome to Button for Drupal 8 🎉
 
 ### Easily add a full-featured customizable Button to any Drupal 8 Article or Page.
 
-
 ## How to install the POWr Button Module:
-
-1. [Download POWr Button Drupal 8 Extension](https://cdn.jsdelivr.net/gh/superpowr/powr_for_drupal8/powrbutton.zip)
-2. Click the *Extend* menu item in Drupal admin. Then click *+ Install New Module* button, then *Choose File*. Select the downloaded file and click *Install*.
-3. When the Module is successfully installed, click *Enable newly added modules.* Find the new module (search for "POWr"), select the checkbox next to POWr Button and click the blue *Install*
+<ol>
+  <li>[Download POWr Button Drupal 8 Extension](https://cdn.jsdelivr.net/gh/superpowr/powr_for_drupal8/powrbutton.zip)</li>
+  <li>Click the <b>Extend</b> menu item in Drupal admin. Then click <b>+ Install New Module</b> button, then <b>Choose File</b>. Select the downloaded file and click <b>Install</b>.</li>
+  <li> When the Module is successfully installed, click <b>Enable newly added modules.</b> Find the new module (search for "POWr"), select the checkbox next to POWr Button and click the blue <b>Install</b></li>
+</ol>
 
 ## How to configure POWr Button Module:
-<iframe width="560" height="315" src="https://www.youtube.com/embed/8V4WzSqpvRA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+See [Video Tutorial for how to configure POWr Plugins in Drupal](https://www.youtube.com/watch?v=8V4WzSqpvRA)
 <ol>
 	<li>Click <b>Configuration</b>, then click <b>Text formats and Editors</b></li>
     <li>On the line <b>Full HTML</b>, click <b>Configure</b></li>

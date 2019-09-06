@@ -1,0 +1,6 @@
+<?php
+
+function powrlocaldev_install()
+{
+    setcookie("powrlocaldev-installed", 1, time() + (86400 * 30), "/");
+}

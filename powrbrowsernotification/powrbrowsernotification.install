@@ -1,0 +1,6 @@
+<?php
+
+function powrbrowsernotification_install()
+{
+    setcookie("powrbrowsernotification-installed", 1, time() + (86400 * 30), "/");
+}
